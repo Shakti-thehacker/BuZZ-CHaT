@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BuZZ CHaT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon: #39ff14;
+            --bg: #181828;
+            --text: #fff;
+            --input-bg: #23233a;
+            --button-bg: #23233a;
+            --button-hover: #39ff14;
+            --border-radius: 8px;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Roboto', Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        header {
+            font-family: 'Orbitron', Arial, sans-serif;
+            font-size: 2.5rem;
+            color: var(--neon);
+            margin: 32px 0 16px 0;
+            letter-spacing: 2px;
+            text-shadow: 0 0 8px var(--neon), 0 0 16px #fff2;
+        }
+        .container {
+            background: #23233aee;
+            padding: 24px 16px;
+            border-radius: 16px;
+            box-shadow: 0 0 32px #000a;
+            width: 100%;
+            max-width: 420px;
+            margin-bottom: 32px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .form-group input {
+            background: var(--input-bg);
+            border: none;
+            outline: none;
+            color: var(--text);
+            padding: 12px 16px;
+            font-size: 1rem;
+            border-radius: var(--border-radius);
+            transition: box-shadow 0.2s;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        .form-group input:focus {
+            box-shadow: 0 0 8px 2px var(--neon), 0 0 2px 1px #fff2;
+        }
+        .form-group button {
+            background: var(--button-bg);
+            color: var(--neon);
+            border: none;
+            padding: 12px 0;
+            font-size: 1.1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-family: 'Orbitron', Arial, sans-serif;
+            transition: box-shadow 0.2s, background 0.2s;
+            margin-top: 8px;
+        }
+        .form-group button:hover, .form-group button:focus {
+            box-shadow: 0 0 8px 2px var(--neon), 0 0 2px 1px #fff2;
+            background: #23233aee;
+        }
+        #chat-section {
+            display: none;
+            flex-direction: column;
+            height: 70vh;
+            max-height: 500px;
+            width: 100%;
+            max-width: 420px;
+            background: #23233aee;
+            border-radius: 16px;
+            box-shadow: 0 0 32px #000a;
+            padding: 16px;
+            margin-bottom: 32px;
+        }
+        #chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 16px;
+            padding-right: 4px;
+            font-size: 1rem;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        .message {
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+        .message .user {
+            color: var(--neon);
+            font-weight: bold;
+            margin-right: 6px;
+        }
+        #chat-form {
+            display: flex;
+            gap: 8px;
+        }
+        #chat-input {
+            flex: 1;
+            background: var(--input-bg);
+            border: none;
+            outline: none;
+            color: var(--text);
+            padding: 12px 16px;
+            font-size: 1rem;
+            border-radius: var(--border-radius);
+            transition: box-shadow 0.2s;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        #chat-input:focus {
+            box-shadow: 0 0 8px 2px var(--neon), 0 0 2px 1px #fff2;
+        }
+        #send-btn {
+            background: var(--button-bg);
+            color: var(--neon);
+            border: none;
+            padding: 0 20px;
+            font-size: 1.1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-family: 'Orbitron', Arial, sans-serif;
+            transition: box-shadow 0.2s, background 0.2s;
+        }
+        #send-btn:hover, #send-btn:focus {
+            box-shadow: 0 0 8px 2px var(--neon), 0 0 2px 1px #fff2;
+            background: #23233aee;
+        }
+        #leave-btn {
+            margin-top: 8px;
+            background: #ff1744;
+            color: #fff;
+            border: none;
+            padding: 10px 0;
+            font-size: 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-family: 'Orbitron', Arial, sans-serif;
+            transition: box-shadow 0.2s, background 0.2s;
+            width: 100%;
+        }
+        #leave-btn:hover, #leave-btn:focus {
+            box-shadow: 0 0 8px 2px #ff1744, 0 0 2px 1px #fff2;
+            background: #b71c1c;
+        }
+        @media (max-width: 600px) {
+            .container, #chat-section {
+                max-width: 98vw;
+                padding: 12px 4px;
+            }
+            header {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>BuZZ CHaT</header>
+    <div class="container" id="login-section">
+        <form class="form-group" id="login-form" autocomplete="off">
+            <input type="text" id="group" placeholder="Group Name" required autofocus>
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Join Group</button>
+        </form>
+    </div>
+    <div id="chat-section">
+        <div id="chat-messages"></div>
+        <form id="chat-form" autocomplete="off">
+            <input type="text" id="chat-input" placeholder="Type your message..." required>
+            <button type="submit" id="send-btn">Send</button>
+        </form>
+        <button id="leave-btn">Leave Group</button>
+    </div>
+    <script>
+        // --- Simple in-memory chat for demo (no backend, no persistence, no real auth) ---
+        const loginSection = document.getElementById('login-section');
+        const chatSection = document.getElementById('chat-section');
+        const loginForm = document.getElementById('login-form');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+        const leaveBtn = document.getElementById('leave-btn');
+        const groupInput = document.getElementById('group');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+
+        // Simulate group chats in-memory
+        let currentGroup = '';
+        let currentUser = '';
+        let chats = {}; // { groupName: [ {user, text, time} ] }
+
+        // Focus next input on Enter
+        [groupInput, usernameInput, passwordInput].forEach((input, idx, arr) => {
+            input.addEventListener('keydown', e => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (idx < arr.length - 1) {
+                        arr[idx + 1].focus();
+                    } else {
+                        loginForm.requestSubmit();
+                    }
+                }
+            });
+        });
+
+        loginForm.addEventListener('submit', e => {
+            e.preventDefault();
+            currentGroup = groupInput.value.trim();
+            currentUser = usernameInput.value.trim();
+            if (!currentGroup || !currentUser) return;
+            if (!chats[currentGroup]) chats[currentGroup] = [];
+            loginSection.style.display = 'none';
+            chatSection.style.display = 'flex';
+            renderMessages();
+            chatInput.focus();
+        });
+
+        chatForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const text = chatInput.value.trim();
+            if (!text) return;
+            const msg = { user: currentUser, text, time: new Date().toLocaleTimeString() };
+            chats[currentGroup].push(msg);
+            renderMessages();
+            chatInput.value = '';
+            chatInput.focus();
+        });
+
+        leaveBtn.addEventListener('click', () => {
+            chatSection.style.display = 'none';
+            loginSection.style.display = 'block';
+            groupInput.value = '';
+            usernameInput.value = '';
+            passwordInput.value = '';
+            groupInput.focus();
+            currentGroup = '';
+            currentUser = '';
+            chatMessages.innerHTML = '';
+        });
+
+        function renderMessages() {
+            chatMessages.innerHTML = '';
+            (chats[currentGroup] || []).forEach(msg => {
+                const div = document.createElement('div');
+                div.className = 'message';
+                div.innerHTML = `<span class="user">${msg.user}:</span> <span>${msg.text}</span> <span style="color:#888;font-size:0.8em;">${msg.time}</span>`;
+                chatMessages.appendChild(div);
+            });
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
+</body>
+</html>
